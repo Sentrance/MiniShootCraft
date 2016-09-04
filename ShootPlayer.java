@@ -41,12 +41,14 @@ public class ShootPlayer
         this.kills++;
         board.resetScores(sKills.getEntry());
         sKills = objective.getScore(ChatColor.DARK_AQUA + "Kills: " + kills);
+        sKills.setScore(2);
     }
 
     public void updateTime(int timeLeft)
     {
         board.resetScores(sTimeLeft.getEntry());
         sTimeLeft = objective.getScore(ChatColor.DARK_GREEN + "Time left: " + timeLeft);
+        sTimeLeft.setScore(3);
     }
 
     public void updateDispName(int i)

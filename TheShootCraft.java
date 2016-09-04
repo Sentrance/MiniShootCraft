@@ -14,8 +14,8 @@ public class TheShootCraft extends JavaPlugin
     // ========================================================================
     // FIELDS
     // ========================================================================
-    private int timeLeft = 300;
-    private int seconde = 0;
+    private int timeLeft = 100;
+    private int ticks = 0;
     private HashMap<UUID, ShootPlayer> playerData = new HashMap<>();
 
     // ========================================================================
@@ -38,18 +38,21 @@ public class TheShootCraft extends JavaPlugin
             @Override
             public void run()
             {
-                seconde++;
+                ticks++;
                 for (ShootPlayer e : playerData.values())
                 {
-                    e.updateDispName(seconde);
-                    if (seconde >= 20)
+                    e.updateDispName(ticks);
+                    if (ticks >= 20)
                     {
-                        seconde = 0;
-                        timeLeft--;
                         e.updateTime(timeLeft);
                         if (timeLeft <= 0)
                             Bukkit.shutdown();
                     }
+                }
+                if (ticks == 20)
+                {
+                    ticks = 0;
+                    timeLeft--;
                 }
             }
         }, 0, 1);
