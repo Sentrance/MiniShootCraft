@@ -1,17 +1,20 @@
 package com.gmail.sentrance1;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scoreboard.DisplaySlot;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -31,8 +34,16 @@ class ShootListeners implements Listener
     // ========================================================================
     // FIELDS
     // ========================================================================
-    private HashMap killsPerPlayer = new HashMap();
+    public HashMap<UUID, ShootPlayer> playerData;
     private int doubleKill = 0;
+
+    // ========================================================================
+    // CONSTRUCTOR
+    // ========================================================================
+    public ShootListeners(HashMap<UUID, ShootPlayer> playerData)
+    {
+        this.playerData = playerData;
+    }
 
     // ========================================================================
     // METHODS
@@ -67,38 +78,18 @@ class ShootListeners implements Listener
                     {
                         nearPlayers.damage(1337);
                         doubleKill++;
-                        if (!killsPerPlayer.containsKey(player.getUniqueId()))
-                            killsPerPlayer.put(player.getUniqueId(), 1);
-                        else
-                        {
-                            int oldKills = (int)killsPerPlayer.get(player.getUniqueId());
-                            killsPerPlayer.replace(player.getUniqueId(), ++oldKills);
-                        }
+                        playerData.get(player.getUniqueId()).newKill();
                     }
                     if (doubleKill == 2) //Si il y a eu un doublekill
                     {
                         Bukkit.broadcastMessage("Wow, " + player.getName() + " just made a doublekill!");
                         player.getInventory().setChestplate(new ItemStack(Material.DIAMOND_CHESTPLATE));
                     }
-                    updateKills(player, player.getScoreboard(),
-                                player.getScoreboard().getObjective(DisplaySlot.SIDEBAR));//explicit
                 }
             if (i > 2) //Evite de faire pop une particule directement sur le tireur
                 player.getWorld().playEffect(loc, Effect.COLOURED_DUST, 5);
         }
         doubleKill = 0; //On reset le compteur de doublekill
-    }
-
-    private void updateKills(Player player, Scoreboard board, Objective objective)
-    {
-        for (String line : board.getEntries()) //On update le scoreboard
-        {
-            if (line.contains("Kills: "))
-            {
-                board.resetScores(line);
-                objective.getScore(ChatColor.DARK_AQUA + "Kills: " + killsPerPlayer.get(player.getUniqueId())).setScore(2);
-            }
-        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
@@ -112,5 +103,31 @@ class ShootListeners implements Listener
             return true;
         }
         return false;
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public boolean onPlayerDecreasingFood(FoodLevelChangeEvent foodEvent)
+    {
+        if (foodEvent.getEntity() instanceof Player)
+        {
+            foodEvent.setCancelled(true);
+            Player player = (Player) foodEvent.getEntity();
+            player.setFoodLevel(20);
+            player.setSaturation(5);
+            return true;
+        }
+        return false;
+    }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent playerJoin)
+    {
+        playerData.put(playerJoin.getPlayer().getUniqueId(), new ShootPlayer(playerJoin.getPlayer()));
+    }
+
+    @EventHandler
+    public void onPlayerDisconnect(PlayerQuitEvent playerDisconnect)
+    {
+        playerData.remove(playerDisconnect.getPlayer().getUniqueId());
     }
 }
