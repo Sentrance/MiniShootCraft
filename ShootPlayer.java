@@ -6,13 +6,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 /**
- * Created by Sentrance on 04/09/2016.
+ * Created by Sentrance on 04/09/2016. =)
  */
 class ShootPlayer
 {
     // ========================================================================
     // FIELDS
     // ========================================================================
+
     private ScoreboardManager sManager = Bukkit.getScoreboardManager();
     private Scoreboard board = sManager.getNewScoreboard();
     private Objective objective = board.registerNewObjective("The ShootCraft", "dummy");
@@ -23,6 +24,7 @@ class ShootPlayer
     // ========================================================================
     // CONSTRUCTOR
     // ========================================================================
+
     ShootPlayer(Player player)
     {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -36,6 +38,7 @@ class ShootPlayer
     // ========================================================================
     // METHODS
     // ========================================================================
+
     void newKill()
     {
         this.kills++;
@@ -59,10 +62,5 @@ class ShootPlayer
             objective.setDisplayName("§5§lThe ShootCraft");
         if (i >= 10 && i < 15)
             objective.setDisplayName("§d§lThe ShootCraft");
-    }
-
-    public Objective getObjective()
-    {
-        return objective;
     }
 }

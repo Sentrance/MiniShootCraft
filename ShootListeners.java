@@ -20,13 +20,14 @@ import org.bukkit.util.Vector;
 import java.util.*;
 
 /**
- * Created by Sentrance on 05/08/2016.
+ * Created by Sentrance on 05/08/2016. =)
  */
 class ShootListeners implements Listener
 {
     // ========================================================================
     // STATIC FIELDS
     // ========================================================================
+
     private static final double SHOOT_STEP = 0.3D; //Précision de tir
     private static final int SHOOT_MAX_CHECKS = 150; //Distance de tir = SHOOT_MAX_CHECKS * SHOOT_STEP
     private static final double SHOOT_RADIUS = 3D; //Hitbox du tir
@@ -34,12 +35,14 @@ class ShootListeners implements Listener
     // ========================================================================
     // FIELDS
     // ========================================================================
+
     private HashMap<UUID, ShootPlayer> playerData;
     private int doubleKill = 0;
 
     // ========================================================================
     // CONSTRUCTOR
     // ========================================================================
+
     ShootListeners(HashMap<UUID, ShootPlayer> playerData)
     {
         this.playerData = playerData;
@@ -48,12 +51,13 @@ class ShootListeners implements Listener
     // ========================================================================
     // METHODS
     // ========================================================================
+
     private void launchTrail(Player player)
     {
         final Location loc = player.getEyeLocation().clone(); //On récupère la position des yeux
         final Vector dir = loc.getDirection().normalize().multiply(SHOOT_STEP); //On récupère la direction
         final Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers(); //On récupère les entités du monde
-        Set<UUID> hurtedPlayers = new HashSet<>();
+        Set<UUID> hurtedPlayers = new HashSet<UUID>(0);
         Block lastBlock = null;
         for (int i = 0; i < SHOOT_MAX_CHECKS; i++)
         {
@@ -67,7 +71,7 @@ class ShootListeners implements Listener
             }
             for (Player nearPlayers : onlinePlayers) //On vérifie qu'il y a une entité à côté
                 if (nearPlayers.getLocation().distanceSquared(loc) <= SHOOT_RADIUS && nearPlayers != player
-                    && nearPlayers.getHealth() > 0 && hurtedPlayers.add(nearPlayers.getUniqueId()))
+                    && !nearPlayers.isDead() && hurtedPlayers.add(nearPlayers.getUniqueId()))
                 {
                     if (nearPlayers.getInventory().getChestplate() != null)//Si il a une protection l'enlever
                     {
@@ -93,13 +97,13 @@ class ShootListeners implements Listener
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
-    public boolean onPlayerShoot(PlayerInteractEvent ClickEvent)
+    public boolean onPlayerShoot(PlayerInteractEvent clickEvent)
     {
-        Action action = ClickEvent.getAction();
+        Action action = clickEvent.getAction();
         if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR)
-            && ClickEvent.getMaterial() == Material.ARROW)
+            && clickEvent.getMaterial() == Material.ARROW)
         {
-            this.launchTrail(ClickEvent.getPlayer());
+            this.launchTrail(clickEvent.getPlayer());
             return true;
         }
         return false;

@@ -7,20 +7,22 @@ import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * Created by Sentrance on 05/08/2016.
+ * Created by Sentrance on 05/08/2016. =)
  */
 public class TheShootCraft extends JavaPlugin
 {
     // ========================================================================
     // FIELDS
     // ========================================================================
+
     private int timeLeft = 100;
     private int ticks = 0;
-    private HashMap<UUID, ShootPlayer> playerData = new HashMap<>();
+    private HashMap<UUID, ShootPlayer> playerData = new HashMap<UUID, ShootPlayer>();
 
     // ========================================================================
     // CONSTRUCTOR
     // ========================================================================
+
     public TheShootCraft()
     {
 
@@ -29,6 +31,7 @@ public class TheShootCraft extends JavaPlugin
     // ========================================================================
     // METHODS
     // ========================================================================
+
     public void onEnable()
     {
         Bukkit.broadcastMessage("[SHOOTCRAFT]Initialisation...");
