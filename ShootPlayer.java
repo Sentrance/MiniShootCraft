@@ -8,22 +8,22 @@ import org.bukkit.scoreboard.*;
 /**
  * Created by Sentrance on 04/09/2016.
  */
-public class ShootPlayer
+class ShootPlayer
 {
     // ========================================================================
     // FIELDS
     // ========================================================================
-    public ScoreboardManager sManager = Bukkit.getScoreboardManager();
-    public Scoreboard board = sManager.getNewScoreboard();
-    public Objective objective = board.registerNewObjective("The ShootCraft", "dummy");
-    public int kills = 0;
-    public Score sKills = objective.getScore(ChatColor.DARK_AQUA + "Kills: " + kills);
-    public Score sTimeLeft = objective.getScore(ChatColor.DARK_GREEN + "Time left: " + 300);
+    private ScoreboardManager sManager = Bukkit.getScoreboardManager();
+    private Scoreboard board = sManager.getNewScoreboard();
+    private Objective objective = board.registerNewObjective("The ShootCraft", "dummy");
+    private int kills = 0;
+    private Score sKills = objective.getScore(ChatColor.DARK_AQUA + "Kills: " + kills);
+    private Score sTimeLeft = objective.getScore(ChatColor.DARK_GREEN + "Time left: " + 300);
 
     // ========================================================================
     // CONSTRUCTOR
     // ========================================================================
-    public ShootPlayer(Player player)
+    ShootPlayer(Player player)
     {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         objective.setDisplayName("§b§lThe ShootCraft");
@@ -36,7 +36,7 @@ public class ShootPlayer
     // ========================================================================
     // METHODS
     // ========================================================================
-    public void newKill()
+    void newKill()
     {
         this.kills++;
         board.resetScores(sKills.getEntry());
@@ -44,14 +44,14 @@ public class ShootPlayer
         sKills.setScore(2);
     }
 
-    public void updateTime(int timeLeft)
+    void updateTime(int timeLeft)
     {
         board.resetScores(sTimeLeft.getEntry());
         sTimeLeft = objective.getScore(ChatColor.DARK_GREEN + "Time left: " + timeLeft);
         sTimeLeft.setScore(3);
     }
 
-    public void updateDispName(int i)
+    void updateDispName(int i)
     {
         if (i >= 0 && i < 5)
             objective.setDisplayName("§b§lThe ShootCraft");

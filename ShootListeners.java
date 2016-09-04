@@ -34,13 +34,13 @@ class ShootListeners implements Listener
     // ========================================================================
     // FIELDS
     // ========================================================================
-    public HashMap<UUID, ShootPlayer> playerData;
+    private HashMap<UUID, ShootPlayer> playerData;
     private int doubleKill = 0;
 
     // ========================================================================
     // CONSTRUCTOR
     // ========================================================================
-    public ShootListeners(HashMap<UUID, ShootPlayer> playerData)
+    ShootListeners(HashMap<UUID, ShootPlayer> playerData)
     {
         this.playerData = playerData;
     }
