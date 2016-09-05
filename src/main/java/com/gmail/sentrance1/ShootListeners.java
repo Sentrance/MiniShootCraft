@@ -93,25 +93,25 @@ class ShootListeners implements Listener
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
-    public boolean onPlayerShoot(PlayerInteractEvent clickEvent)
+    public boolean onPlayerInteract(PlayerInteractEvent event)
     {
-        Action action = clickEvent.getAction();
+        Action action = event.getAction();
         if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR)
-            && clickEvent.getMaterial() == Material.ARROW)
+            && event.getMaterial() == Material.ARROW)
         {
-            this.launchTrail(clickEvent.getPlayer());
+            this.launchTrail(event.getPlayer());
             return true;
         }
         return false;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public boolean onPlayerDecreasingFood(FoodLevelChangeEvent foodEvent)
+    public boolean onFoodLevelChange(FoodLevelChangeEvent event)
     {
-        if (foodEvent.getEntity() instanceof Player)
+        if (event.getEntity() instanceof Player)
         {
-            foodEvent.setCancelled(true);
-            Player player = (Player) foodEvent.getEntity();
+            event.setCancelled(true);
+            Player player = (Player) event.getEntity();
             player.setFoodLevel(20);
             player.setSaturation(5);
             return true;
@@ -120,14 +120,14 @@ class ShootListeners implements Listener
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent joinEvent)
+    public void onPlayerJoin(PlayerJoinEvent event)
     {
-        plugin.playerJoin(joinEvent.getPlayer());
+        plugin.playerJoin(event.getPlayer());
     }
 
     @EventHandler
-    public void onPlayerDisconnect(PlayerQuitEvent disconnectEvent)
+    public void onPlayerQuit(PlayerQuitEvent event)
     {
-        plugin.playerQuit(disconnectEvent.getPlayer());
+        plugin.playerQuit(event.getPlayer());
     }
 }
