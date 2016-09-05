@@ -34,7 +34,6 @@ class ShootListeners implements Listener
     // ========================================================================
 
     private HashMap<UUID, ShootPlayer> playerData;
-    private int doubleKill = 0;
 
     // ========================================================================
     // CONSTRUCTOR
@@ -56,6 +55,7 @@ class ShootListeners implements Listener
         final Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers(); //On récupère les entités du monde
         Set<UUID> hurtedPlayers = new HashSet<UUID>(0);
         Block lastBlock = null;
+        int doubleKill = 0;
         for (int i = 0; i < SHOOT_MAX_CHECKS; i++)
         {
             loc.add(dir);
@@ -90,7 +90,6 @@ class ShootListeners implements Listener
             if (i > 2) //Evite de faire pop une particule directement sur le tireur
                 player.getWorld().playEffect(loc, Effect.COLOURED_DUST, 5);
         }
-        doubleKill = 0; //On reset le compteur de doublekill
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
