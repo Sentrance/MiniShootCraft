@@ -7,6 +7,7 @@ import org.bukkit.scoreboard.*;
 
 class ShootPlayer
 {
+
     // ========================================================================
     // STATIC FIELDS
     // ========================================================================
@@ -72,4 +73,5 @@ class ShootPlayer
             return;
         objective.setDisplayName(color.toString() + ChatColor.BOLD + GAME_NAME);
     }
+
 }

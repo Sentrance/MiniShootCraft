@@ -24,6 +24,7 @@ import java.util.UUID;
 
 class ShootListeners implements Listener
 {
+
     // ========================================================================
     // STATIC FIELDS
     // ========================================================================
@@ -133,4 +134,5 @@ class ShootListeners implements Listener
     {
         plugin.playerQuit(event.getPlayer());
     }
+
 }
