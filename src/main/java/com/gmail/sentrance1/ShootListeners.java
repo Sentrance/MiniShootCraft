@@ -19,9 +19,6 @@ import org.bukkit.util.Vector;
 
 import java.util.*;
 
-/**
- * Created by Sentrance on 05/08/2016. =)
- */
 class ShootListeners implements Listener
 {
     // ========================================================================

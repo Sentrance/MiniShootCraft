@@ -6,9 +6,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 import java.util.UUID;
 
-/**
- * Created by Sentrance on 05/08/2016. =)
- */
 public class TheShootCraft extends JavaPlugin
 {
     // ========================================================================

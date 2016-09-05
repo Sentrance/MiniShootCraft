@@ -5,9 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
-/**
- * Created by Sentrance on 04/09/2016. =)
- */
 class ShootPlayer
 {
     // ========================================================================
