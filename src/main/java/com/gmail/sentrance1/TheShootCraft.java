@@ -31,7 +31,7 @@ public class TheShootCraft extends JavaPlugin
 
     public void onEnable()
     {
-        Bukkit.broadcastMessage("[SHOOTCRAFT]Initialisation...");
+        getLogger().info("Initialization...");
         getServer().getPluginManager().registerEvents(new ShootListeners(playerData), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
         {
@@ -56,13 +56,13 @@ public class TheShootCraft extends JavaPlugin
                 }
             }
         }, 0, 1);
-        Bukkit.broadcastMessage("[SHOOTCRAFT]Initialisation done.");
+        getLogger().info("Initialized!");
     }
 
     public void onDisable()
     {
-        Bukkit.broadcastMessage("[SHOOTCRAFT]Disabling...");
+        getLogger().info("Disabling...");
         Bukkit.getScheduler().cancelTasks(this);
-        Bukkit.broadcastMessage("[SHOOTCRAFT]Disabling done.");
+        getLogger().info("Disabled!");
     }
 }
