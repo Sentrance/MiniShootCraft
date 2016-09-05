@@ -17,7 +17,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 class ShootListeners implements Listener
 {
@@ -53,7 +56,7 @@ class ShootListeners implements Listener
         final Location loc = player.getEyeLocation().clone(); //On récupère la position des yeux
         final Vector dir = loc.getDirection().normalize().multiply(SHOOT_STEP); //On récupère la direction
         final Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers(); //On récupère les entités du monde
-        Set<UUID> hurtedPlayers = new HashSet<UUID>(0);
+        Set<UUID> hurtedPlayers = new HashSet<>(0);
         Block lastBlock = null;
         int doubleKill = 0;
         for (int i = 0; i < SHOOT_MAX_CHECKS; i++)

@@ -17,9 +17,9 @@ class ShootPlayer
     // FIELDS
     // ========================================================================
 
-    private ScoreboardManager sManager = Bukkit.getScoreboardManager();
-    private Scoreboard board = sManager.getNewScoreboard();
-    private Objective objective = board.registerNewObjective(GAME_NAME, "dummy");
+    private final ScoreboardManager sManager = Bukkit.getScoreboardManager();
+    private final Scoreboard board = sManager.getNewScoreboard();
+    private final Objective objective = board.registerNewObjective(GAME_NAME, "dummy");
     private int kills = 0;
     private Score sKills = objective.getScore(ChatColor.DARK_AQUA + "Kills: " + kills);
     private Score sTimeLeft = objective.getScore(ChatColor.DARK_GREEN + "Time left: " + 300);

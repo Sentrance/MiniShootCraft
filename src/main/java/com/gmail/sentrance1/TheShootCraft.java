@@ -16,21 +16,13 @@ public class TheShootCraft extends JavaPlugin implements Runnable
 
     private int secondsLeft = 100;
     private int ticks = 0;
-    private final HashMap<UUID, ShootPlayer> playersData = new HashMap<UUID, ShootPlayer>();
-
-    // ========================================================================
-    // CONSTRUCTOR
-    // ========================================================================
-
-    public TheShootCraft()
-    {
-
-    }
+    private final HashMap<UUID, ShootPlayer> playersData = new HashMap<>();
 
     // ========================================================================
     // METHODS
     // ========================================================================
 
+    @Override
     public void onEnable()
     {
         getLogger().info("Initialization...");
@@ -66,6 +58,7 @@ public class TheShootCraft extends JavaPlugin implements Runnable
         }
     }
 
+    @Override
     public void onDisable()
     {
         getLogger().info("Disabling...");
