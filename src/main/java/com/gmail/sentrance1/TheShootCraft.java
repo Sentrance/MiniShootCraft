@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class TheShootCraft extends JavaPlugin
+public class TheShootCraft extends JavaPlugin implements Runnable
 {
     // ========================================================================
     // FIELDS
@@ -35,31 +35,30 @@ public class TheShootCraft extends JavaPlugin
     {
         getLogger().info("Initialization...");
         getServer().getPluginManager().registerEvents(new ShootListeners(this), this);
-        getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                ticks++;
-                for (ShootPlayer e : getShootPlayers())
-                {
-                    e.updateDispName(ticks);
-                    if (ticks >= 20)
-                    {
-                        e.updateTime(timeLeft);
-                        if (timeLeft <= 0)
-                            Bukkit.shutdown();
-                    }
-                }
-                // TODO: Never reset ticks, instead use modulo when needed!
-                if (ticks == 20)
-                {
-                    ticks = 0;
-                    timeLeft--;
-                }
-            }
-        }, 0, 1);
+        getServer().getScheduler().scheduleSyncRepeatingTask(this, this, 0, 1);
         getLogger().info("Initialized!");
+    }
+
+    @Override
+    public void run()
+    {
+        ticks++;
+        for (ShootPlayer e : getShootPlayers())
+        {
+            e.updateDispName(ticks);
+            if (ticks >= 20)
+            {
+                e.updateTime(timeLeft);
+                if (timeLeft <= 0)
+                    Bukkit.shutdown();
+            }
+        }
+        // TODO: Never reset ticks, instead use modulo when needed!
+        if (ticks == 20)
+        {
+            ticks = 0;
+            timeLeft--;
+        }
     }
 
     public void onDisable()
