@@ -14,7 +14,7 @@ public class TheShootCraft extends JavaPlugin implements Runnable
     // FIELDS
     // ========================================================================
 
-    private int timeLeft = 100;
+    private int secondsLeft = 100;
     private int ticks = 0;
     private final HashMap<UUID, ShootPlayer> playersData = new HashMap<UUID, ShootPlayer>();
 
@@ -43,21 +43,26 @@ public class TheShootCraft extends JavaPlugin implements Runnable
     public void run()
     {
         ticks++;
+
+        boolean secondsUpdated;
+        if (ticks % 20 == 0)
+        {
+            secondsUpdated = true;
+            secondsLeft--;
+            if (secondsLeft <= 0)
+            {
+                Bukkit.shutdown();
+                return;
+            }
+        }
+        else
+            secondsUpdated = false;
+
         for (ShootPlayer e : getShootPlayers())
         {
             e.updateDispName(ticks);
-            if (ticks >= 20)
-            {
-                e.updateTime(timeLeft);
-                if (timeLeft <= 0)
-                    Bukkit.shutdown();
-            }
-        }
-        // TODO: Never reset ticks, instead use modulo when needed!
-        if (ticks == 20)
-        {
-            ticks = 0;
-            timeLeft--;
+            if (secondsUpdated)
+                e.updateTime(secondsLeft);
         }
     }
 

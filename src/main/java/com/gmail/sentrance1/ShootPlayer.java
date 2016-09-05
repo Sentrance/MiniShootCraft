@@ -57,15 +57,16 @@ class ShootPlayer
         sTimeLeft.setScore(3);
     }
 
-    void updateDispName(int ticks)
+    void updateDispName(final int ticks)
     {
         final ChatColor color;
-        // TODO: Improve conditions and support ticks greater than 20
-        if (ticks >= 0 && ticks < 5)
+
+        int secTicks = ticks % 20;
+        if (secTicks < 5)
             color = ChatColor.AQUA;
-        else if (ticks >= 5 && ticks < 10)
+        else if (secTicks < 10)
             color = ChatColor.DARK_PURPLE;
-        else if (ticks >= 10 && ticks < 15)
+        else if (secTicks < 15)
             color = ChatColor.LIGHT_PURPLE;
         else
             return;
