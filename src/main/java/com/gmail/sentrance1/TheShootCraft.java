@@ -50,6 +50,7 @@ public class TheShootCraft extends JavaPlugin
                             Bukkit.shutdown();
                     }
                 }
+                // TODO: Never reset ticks, instead use modulo when needed!
                 if (ticks == 20)
                 {
                     ticks = 0;

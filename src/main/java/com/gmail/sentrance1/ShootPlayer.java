@@ -31,10 +31,10 @@ class ShootPlayer
     ShootPlayer(Player player)
     {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName("§b§l" + GAME_NAME);
+        objective.setDisplayName(ChatColor.AQUA.toString() + ChatColor.BOLD + GAME_NAME);
         sTimeLeft.setScore(3);
         sKills.setScore(2);
-        objective.getScore("§f").setScore(1);
+        objective.getScore(ChatColor.WHITE.toString()).setScore(1);
         player.setScoreboard(board);
     }
 
@@ -57,13 +57,18 @@ class ShootPlayer
         sTimeLeft.setScore(3);
     }
 
-    void updateDispName(int i)
+    void updateDispName(int ticks)
     {
-        if (i >= 0 && i < 5)
-            objective.setDisplayName("§b§l" + GAME_NAME);
-        if (i >= 5 && i < 10)
-            objective.setDisplayName("§5§l" + GAME_NAME);
-        if (i >= 10 && i < 15)
-            objective.setDisplayName("§d§l" + GAME_NAME);
+        final ChatColor color;
+        // TODO: Improve conditions and support ticks greater than 20
+        if (ticks >= 0 && ticks < 5)
+            color = ChatColor.AQUA;
+        else if (ticks >= 5 && ticks < 10)
+            color = ChatColor.DARK_PURPLE;
+        else if (ticks >= 10 && ticks < 15)
+            color = ChatColor.LIGHT_PURPLE;
+        else
+            return;
+        objective.setDisplayName(color.toString() + ChatColor.BOLD + GAME_NAME);
     }
 }
