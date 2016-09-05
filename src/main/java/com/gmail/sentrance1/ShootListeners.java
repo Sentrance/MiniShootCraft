@@ -17,13 +17,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
-/**
- * Created by Sentrance on 05/08/2016. =)
- */
 class ShootListeners implements Listener
 {
+
     // ========================================================================
     // STATIC FIELDS
     // ========================================================================
@@ -36,16 +37,15 @@ class ShootListeners implements Listener
     // FIELDS
     // ========================================================================
 
-    private HashMap<UUID, ShootPlayer> playerData;
-    private int doubleKill = 0;
+    private final TheShootCraft plugin;
 
     // ========================================================================
     // CONSTRUCTOR
     // ========================================================================
 
-    ShootListeners(HashMap<UUID, ShootPlayer> playerData)
+    ShootListeners(TheShootCraft plugin)
     {
-        this.playerData = playerData;
+        this.plugin = plugin;
     }
 
     // ========================================================================
@@ -57,8 +57,9 @@ class ShootListeners implements Listener
         final Location loc = player.getEyeLocation().clone(); //On récupère la position des yeux
         final Vector dir = loc.getDirection().normalize().multiply(SHOOT_STEP); //On récupère la direction
         final Collection<? extends Player> onlinePlayers = Bukkit.getServer().getOnlinePlayers(); //On récupère les entités du monde
-        Set<UUID> hurtedPlayers = new HashSet<UUID>(0);
+        Set<UUID> hurtedPlayers = new HashSet<>(0);
         Block lastBlock = null;
+        int doubleKill = 0;
         for (int i = 0; i < SHOOT_MAX_CHECKS; i++)
         {
             loc.add(dir);
@@ -82,7 +83,7 @@ class ShootListeners implements Listener
                     {
                         nearPlayers.damage(1337);
                         doubleKill++;
-                        playerData.get(player.getUniqueId()).newKill();
+                        plugin.getShootPlayer(player).newKill();
                     }
                     if (doubleKill == 2) //Si il y a eu un doublekill
                     {
@@ -93,29 +94,28 @@ class ShootListeners implements Listener
             if (i > 2) //Evite de faire pop une particule directement sur le tireur
                 player.getWorld().playEffect(loc, Effect.COLOURED_DUST, 5);
         }
-        doubleKill = 0; //On reset le compteur de doublekill
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
-    public boolean onPlayerShoot(PlayerInteractEvent clickEvent)
+    public boolean onPlayerInteract(PlayerInteractEvent event)
     {
-        Action action = clickEvent.getAction();
+        Action action = event.getAction();
         if ((action == Action.RIGHT_CLICK_BLOCK || action == Action.RIGHT_CLICK_AIR)
-            && clickEvent.getMaterial() == Material.ARROW)
+            && event.getMaterial() == Material.ARROW)
         {
-            this.launchTrail(clickEvent.getPlayer());
+            this.launchTrail(event.getPlayer());
             return true;
         }
         return false;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public boolean onPlayerDecreasingFood(FoodLevelChangeEvent foodEvent)
+    public boolean onFoodLevelChange(FoodLevelChangeEvent event)
     {
-        if (foodEvent.getEntity() instanceof Player)
+        if (event.getEntity() instanceof Player)
         {
-            foodEvent.setCancelled(true);
-            Player player = (Player) foodEvent.getEntity();
+            event.setCancelled(true);
+            Player player = (Player) event.getEntity();
             player.setFoodLevel(20);
             player.setSaturation(5);
             return true;
@@ -124,14 +124,15 @@ class ShootListeners implements Listener
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent playerJoin)
+    public void onPlayerJoin(PlayerJoinEvent event)
     {
-        playerData.put(playerJoin.getPlayer().getUniqueId(), new ShootPlayer(playerJoin.getPlayer()));
+        plugin.playerJoin(event.getPlayer());
     }
 
     @EventHandler
-    public void onPlayerDisconnect(PlayerQuitEvent playerDisconnect)
+    public void onPlayerQuit(PlayerQuitEvent event)
     {
-        playerData.remove(playerDisconnect.getPlayer().getUniqueId());
+        plugin.playerQuit(event.getPlayer());
     }
+
 }

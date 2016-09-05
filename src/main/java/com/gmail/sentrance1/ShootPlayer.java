@@ -5,18 +5,22 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
-/**
- * Created by Sentrance on 04/09/2016. =)
- */
 class ShootPlayer
 {
+
+    // ========================================================================
+    // STATIC FIELDS
+    // ========================================================================
+
+    private static final String GAME_NAME = "The ShootCraft";
+
     // ========================================================================
     // FIELDS
     // ========================================================================
 
-    private ScoreboardManager sManager = Bukkit.getScoreboardManager();
-    private Scoreboard board = sManager.getNewScoreboard();
-    private Objective objective = board.registerNewObjective("The ShootCraft", "dummy");
+    private final ScoreboardManager sManager = Bukkit.getScoreboardManager();
+    private final Scoreboard board = sManager.getNewScoreboard();
+    private final Objective objective = board.registerNewObjective(GAME_NAME, "dummy");
     private int kills = 0;
     private Score sKills = objective.getScore(ChatColor.DARK_AQUA + "Kills: " + kills);
     private Score sTimeLeft = objective.getScore(ChatColor.DARK_GREEN + "Time left: " + 300);
@@ -28,10 +32,10 @@ class ShootPlayer
     ShootPlayer(Player player)
     {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName("§b§lThe ShootCraft");
+        objective.setDisplayName(ChatColor.AQUA.toString() + ChatColor.BOLD + GAME_NAME);
         sTimeLeft.setScore(3);
         sKills.setScore(2);
-        objective.getScore("§f").setScore(1);
+        objective.getScore(ChatColor.WHITE.toString()).setScore(1);
         player.setScoreboard(board);
     }
 
@@ -54,13 +58,20 @@ class ShootPlayer
         sTimeLeft.setScore(3);
     }
 
-    void updateDispName(int i)
+    void updateDispName(final int ticks)
     {
-        if (i >= 0 && i < 5)
-            objective.setDisplayName("§b§lThe ShootCraft");
-        if (i >= 5 && i < 10)
-            objective.setDisplayName("§5§lThe ShootCraft");
-        if (i >= 10 && i < 15)
-            objective.setDisplayName("§d§lThe ShootCraft");
+        final ChatColor color;
+
+        int secTicks = ticks % 20;
+        if (secTicks < 5)
+            color = ChatColor.AQUA;
+        else if (secTicks < 10)
+            color = ChatColor.DARK_PURPLE;
+        else if (secTicks < 15)
+            color = ChatColor.LIGHT_PURPLE;
+        else
+            return;
+        objective.setDisplayName(color.toString() + ChatColor.BOLD + GAME_NAME);
     }
+
 }
