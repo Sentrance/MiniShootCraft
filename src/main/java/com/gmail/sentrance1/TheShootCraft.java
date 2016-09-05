@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -40,7 +41,7 @@ public class TheShootCraft extends JavaPlugin
             public void run()
             {
                 ticks++;
-                for (ShootPlayer e : playersData.values())
+                for (ShootPlayer e : getShootPlayers())
                 {
                     e.updateDispName(ticks);
                     if (ticks >= 20)
@@ -85,6 +86,11 @@ public class TheShootCraft extends JavaPlugin
     public ShootPlayer getShootPlayer(Player player)
     {
         return playersData.get(player.getUniqueId());
+    }
+
+    public Collection<ShootPlayer> getShootPlayers()
+    {
+        return playersData.values();
     }
 
 }
