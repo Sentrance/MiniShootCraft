@@ -1,6 +1,7 @@
 package com.gmail.sentrance1;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ public class TheShootCraft extends JavaPlugin
 
     private int timeLeft = 100;
     private int ticks = 0;
-    private HashMap<UUID, ShootPlayer> playerData = new HashMap<UUID, ShootPlayer>();
+    private final HashMap<UUID, ShootPlayer> playersData = new HashMap<UUID, ShootPlayer>();
 
     // ========================================================================
     // CONSTRUCTOR
@@ -32,14 +33,14 @@ public class TheShootCraft extends JavaPlugin
     public void onEnable()
     {
         getLogger().info("Initialization...");
-        getServer().getPluginManager().registerEvents(new ShootListeners(playerData), this);
+        getServer().getPluginManager().registerEvents(new ShootListeners(this), this);
         getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable()
         {
             @Override
             public void run()
             {
                 ticks++;
-                for (ShootPlayer e : playerData.values())
+                for (ShootPlayer e : playersData.values())
                 {
                     e.updateDispName(ticks);
                     if (ticks >= 20)
@@ -65,4 +66,24 @@ public class TheShootCraft extends JavaPlugin
         Bukkit.getScheduler().cancelTasks(this);
         getLogger().info("Disabled!");
     }
+
+    // ------------------------------------------------------------------------
+    // Players data
+    // ------------------------------------------------------------------------
+
+    public void playerJoin(Player player)
+    {
+        playersData.put(player.getUniqueId(), new ShootPlayer(player));
+    }
+
+    public void playerQuit(Player player)
+    {
+        playersData.remove(player.getUniqueId());
+    }
+
+    public ShootPlayer getShootPlayer(Player player)
+    {
+        return playersData.get(player.getUniqueId());
+    }
+
 }

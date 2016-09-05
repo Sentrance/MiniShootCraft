@@ -33,15 +33,15 @@ class ShootListeners implements Listener
     // FIELDS
     // ========================================================================
 
-    private HashMap<UUID, ShootPlayer> playerData;
+    private final TheShootCraft plugin;
 
     // ========================================================================
     // CONSTRUCTOR
     // ========================================================================
 
-    ShootListeners(HashMap<UUID, ShootPlayer> playerData)
+    ShootListeners(TheShootCraft plugin)
     {
-        this.playerData = playerData;
+        this.plugin = plugin;
     }
 
     // ========================================================================
@@ -79,7 +79,7 @@ class ShootListeners implements Listener
                     {
                         nearPlayers.damage(1337);
                         doubleKill++;
-                        playerData.get(player.getUniqueId()).newKill();
+                        plugin.getShootPlayer(player).newKill();
                     }
                     if (doubleKill == 2) //Si il y a eu un doublekill
                     {
@@ -120,14 +120,14 @@ class ShootListeners implements Listener
     }
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent playerJoin)
+    public void onPlayerJoin(PlayerJoinEvent joinEvent)
     {
-        playerData.put(playerJoin.getPlayer().getUniqueId(), new ShootPlayer(playerJoin.getPlayer()));
+        plugin.playerJoin(joinEvent.getPlayer());
     }
 
     @EventHandler
-    public void onPlayerDisconnect(PlayerQuitEvent playerDisconnect)
+    public void onPlayerDisconnect(PlayerQuitEvent disconnectEvent)
     {
-        playerData.remove(playerDisconnect.getPlayer().getUniqueId());
+        plugin.playerQuit(disconnectEvent.getPlayer());
     }
 }
