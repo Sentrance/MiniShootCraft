@@ -8,12 +8,18 @@ import org.bukkit.scoreboard.*;
 class ShootPlayer
 {
     // ========================================================================
+    // STATIC FIELDS
+    // ========================================================================
+
+    private static final String GAME_NAME = "The ShootCraft";
+
+    // ========================================================================
     // FIELDS
     // ========================================================================
 
     private ScoreboardManager sManager = Bukkit.getScoreboardManager();
     private Scoreboard board = sManager.getNewScoreboard();
-    private Objective objective = board.registerNewObjective("The ShootCraft", "dummy");
+    private Objective objective = board.registerNewObjective(GAME_NAME, "dummy");
     private int kills = 0;
     private Score sKills = objective.getScore(ChatColor.DARK_AQUA + "Kills: " + kills);
     private Score sTimeLeft = objective.getScore(ChatColor.DARK_GREEN + "Time left: " + 300);
@@ -25,7 +31,7 @@ class ShootPlayer
     ShootPlayer(Player player)
     {
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        objective.setDisplayName("§b§lThe ShootCraft");
+        objective.setDisplayName("§b§l" + GAME_NAME);
         sTimeLeft.setScore(3);
         sKills.setScore(2);
         objective.getScore("§f").setScore(1);
@@ -54,10 +60,10 @@ class ShootPlayer
     void updateDispName(int i)
     {
         if (i >= 0 && i < 5)
-            objective.setDisplayName("§b§lThe ShootCraft");
+            objective.setDisplayName("§b§l" + GAME_NAME);
         if (i >= 5 && i < 10)
-            objective.setDisplayName("§5§lThe ShootCraft");
+            objective.setDisplayName("§5§l" + GAME_NAME);
         if (i >= 10 && i < 15)
-            objective.setDisplayName("§d§lThe ShootCraft");
+            objective.setDisplayName("§d§l" + GAME_NAME);
     }
 }
